@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { evaluate } from "mathjs";
 import './Calculator.css';
 
@@ -7,18 +7,19 @@ const buttons = [
     '4', '5', '6', '*',
     '1', '2', '3', '-',
     '0', '.', '=', '+',
-    'C'
+    'C', 'CE', '(', ')'
 ];
 
 export default function Calculator() {
     const [input, setInput] = useState("");
-
     const handleButtonClick = (value) => {
         if (value === 'C') {
             setInput("");
+        } else if (value === 'CE') {
+            setInput(input.slice(0, -1));
         } else if (value === '=') {
             try {
-                setInput(String(evaluate(input))); // Using mathjs to evaluate the expression
+                setInput(String(evaluate(input)));
             } catch {
                 setInput("Error");
             }
@@ -77,8 +78,9 @@ export default function Calculator() {
                         key={index}
                         className={
                             value === 'C' ? "clear" :
+                            value === 'CE' ? "clear-entry" :
                                 value === '=' ? "equals" :
-                                    ['+', '-', '*', '/'].includes(value) ? "operator" : "number"
+                                    ['+', '-', '*', '/', '(',')'].includes(value) ? "operator" : "number"
                         }
                         onClick={() => handleButtonClick(value)}
                     >
