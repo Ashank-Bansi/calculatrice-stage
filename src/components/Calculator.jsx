@@ -12,6 +12,8 @@ const buttons = [
 
 export default function Calculator() {
     const [input, setInput] = useState("");
+    const [history, setHistory] = useState([]);
+
     const handleButtonClick = (value) => {
         if (value === 'C') {
             setInput("");
@@ -19,7 +21,9 @@ export default function Calculator() {
             setInput(input.slice(0, -1));
         } else if (value === '=') {
             try {
-                setInput(String(evaluate(input)));
+                const result = evaluate(input);
+                setHistory([{ expression: input, result }, ...history]);
+                setInput(String(result));
             } catch {
                 setInput("Error");
             }
@@ -42,7 +46,9 @@ export default function Calculator() {
                 } else if (key === '=') {
                     // Faire comme si le bouton = était cliqué
                     try {
-                        setInput(String(evaluate(input)));
+                        const result = evaluate(input);
+                        setHistory([{ expression: input, result }, ...history]);
+                        setInput(String(result));
                     } catch {
                         setInput("Error");
                     }
@@ -52,7 +58,9 @@ export default function Calculator() {
             } else if (key === 'Enter') {
                 event.preventDefault();
                 try {
-                    setInput(String(evaluate(input)));
+                    const result = evaluate(input);
+                    setHistory([{ expression: input, result }, ...history]);
+                    setInput(String(result));
                 } catch {
                     setInput("Error");
                 }
@@ -70,24 +78,32 @@ export default function Calculator() {
     }, [input]);
 
     return (
-        <div className="calculator">
+        <><div className="calculator">
             <div className="display">{input || 0}</div>
             <div className="buttons">
                 {buttons.map((value, index) => (
                     <button
                         key={index}
-                        className={
-                            value === 'C' ? "clear" :
+                        className={value === 'C' ? "clear" :
                             value === 'CE' ? "clear-entry" :
                                 value === '=' ? "equals" :
-                                    ['+', '-', '*', '/', '(',')'].includes(value) ? "operator" : "number"
-                        }
+                                    ['+', '-', '*', '/', '(', ')'].includes(value) ? "operator" : "number"}
                         onClick={() => handleButtonClick(value)}
                     >
                         {value}
                     </button>
                 ))}
             </div>
-        </div>
+        </div><div className="history">
+                <h3>Historique des calculs</h3>
+                {history.length === 0 && <p>Aucun calcul effectué</p>}
+                <ul>
+                    {history.map((item, i) => (
+                        <li key={i}>
+                            {item.expression} = {item.result}
+                        </li>
+                    ))}
+                </ul>
+            </div></>
     );
 }
