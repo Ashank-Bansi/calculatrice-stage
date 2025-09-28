@@ -27,6 +27,47 @@ export default function Calculator() {
         }
     };
 
+    useEffect(() => {
+        function handleKeyDown(event) {
+            const allowedKeys = '0123456789+-/*=.cC';
+
+            const key = event.key;
+
+            if (allowedKeys.includes(key)) {
+                event.preventDefault();
+
+                if (key === 'c' || key === 'C') {
+                    setInput("");
+                } else if (key === '=') {
+                    // Faire comme si le bouton = était cliqué
+                    try {
+                        setInput(String(evaluate(input)));
+                    } catch {
+                        setInput("Error");
+                    }
+                } else {
+                    setInput(input + key);
+                }
+            } else if (key === 'Enter') {
+                event.preventDefault();
+                try {
+                    setInput(String(evaluate(input)));
+                } catch {
+                    setInput("Error");
+                }
+            } else if (key === 'Backspace') {
+                event.preventDefault();
+                setInput(input.slice(0, -1));
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [input]);
+
     return (
         <div className="calculator">
             <div className="display">{input || 0}</div>
