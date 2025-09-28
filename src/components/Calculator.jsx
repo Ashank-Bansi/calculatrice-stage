@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { evaluate } from "mathjs";
 import './Calculator.css';
 
 const buttons = [
@@ -17,7 +18,7 @@ export default function Calculator() {
             setInput("");
         } else if (value === '=') {
             try {
-                setInput(String(eval(input).toString()));
+                setInput(String(evaluate(input))); // Using mathjs to evaluate the expression
             } catch {
                 setInput("Error");
             }
