@@ -65,3 +65,38 @@ button.operator {
   background-color: #f1c40f;
   color: #222;
 }
+
+.history {
+  max-width: 360px;
+  margin: 0 auto 30px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 6px 15px rgb(0 0 0 / 0.08);
+  font-family: monospace;
+  font-size: 1rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.history h3 {
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: #333;
+}
+
+.history ul {
+  list-style-type: none;
+  padding: 0 10px;
+  margin: 0;
+}
+
+.history li {
+  border-bottom: 1px solid #eee;
+  padding: 6px 0;
+  color: #555;
+}
+
+.history li:last-child {
+  border-bottom: none;
+}
